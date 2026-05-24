@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — BlackSILV</title>
+  <meta name="description" content="Get in touch with Emmanuel Paul (BlackSILV) — Frontend Developer." />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .page-hero {
+      padding: 160px 5% 80px;
+      border-bottom: 1px solid var(--border);
+      position: relative; overflow: hidden;
+    }
+    .page-hero-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 50% 80% at 10% 60%, rgba(232,160,48,0.06), transparent 70%);
+    }
+    .page-hero-content { position: relative; z-index: 1; }
+
+    /* ---- CONTACT LAYOUT ---- */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    /* ---- INFO SIDE ---- */
+    .contact-info h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      color: var(--cream); margin-bottom: 16px;
+    }
+    .contact-info > p {
+      color: var(--muted); font-size: 0.95rem;
+      line-height: 1.75; margin-bottom: 40px;
+    }
+    .contact-methods { display: flex; flex-direction: column; gap: 16px; }
+    .contact-method {
+      display: flex; align-items: center; gap: 16px;
+      padding: 20px 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      text-decoration: none;
+      transition: 0.3s;
+    }
+    .contact-method:hover { border-color: var(--amber); transform: translateX(6px); }
+    .contact-method-icon {
+      width: 44px; height: 44px;
+      background: var(--bg3);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; flex-shrink: 0;
+    }
+    .contact-method-text h4 { color: var(--cream); font-size: 0.9rem; margin-bottom: 2px; }
+    .contact-method-text p  { color: var(--muted); font-size: 0.82rem; }
+    .contact-method-arrow { margin-left: auto; color: var(--amber); font-size: 1rem; opacity: 0; transition: 0.3s; }
+    .contact-method:hover .contact-method-arrow { opacity: 1; }
+
+    .availability-badge {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 12px 20px;
+      background: rgba(100,200,100,0.08);
+      border: 1px solid rgba(100,200,100,0.2);
+      border-radius: var(--radius);
+      margin-top: 32px;
+      font-size: 0.84rem; color: #6ec46e;
+    }
+    .availability-badge::before {
+      content: '';
+      width: 8px; height: 8px;
+      background: #6ec46e; border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    /* ---- FORM SIDE ---- */
+    .contact-form-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+    }
+    .contact-form-wrap h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem; color: var(--cream);
+      margin-bottom: 8px;
+    }
+    .contact-form-wrap > p {
+      color: var(--muted); font-size: 0.88rem;
+      margin-bottom: 32px;
+    }
+
+    .form-group { margin-bottom: 22px; }
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-family: 'Space Mono', monospace;
+      color: var(--cream2);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      appearance: none;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--amber);
+      box-shadow: 0 0 0 3px rgba(232,160,48,0.1);
+    }
+    .form-group textarea { resize: vertical; min-height: 130px; }
+    .form-group select option { background: var(--bg3); }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-submit {
+      width: 100%;
+      padding: 16px;
+      background: var(--amber);
+      color: var(--bg);
+      border: none;
+      border-radius: 50px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.3s;
+      letter-spacing: 0.02em;
+      margin-top: 8px;
+    }
+    .form-submit:hover {
+      background: var(--amber2);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(232,160,48,0.25);
+    }
+
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .form-success .success-icon {
+      font-size: 3rem; margin-bottom: 16px;
+    }
+    .form-success h4 {
+      font-family: 'Playfair Display', serif;
+      color: var(--cream); font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+    .form-success p { color: var(--muted); }
+
+    /* ---- FAQ ---- */
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 60px;
+    }
+    .faq-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      transition: 0.3s;
+    }
+    .faq-item:hover { border-color: var(--amber); }
+    .faq-item h4 { color: var(--cream); font-size: 0.95rem; margin-bottom: 10px; }
+    .faq-item p  { color: var(--muted); font-size: 0.85rem; line-height: 1.65; }
+
+    @media (max-width: 900px) {
+      .contact-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor"></div>
+  <div class="cursor-ring"></div>
+
+  <div class="mobile-nav">
+    <button class="mobile-close">✕</button>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="projects.html">Projects</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Black<span>SILV</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <button class="nav-menu-btn"><span></span><span></span><span></span></button>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="page-hero-content">
+      <p class="section-label">Let's Connect</p>
+      <h1 class="section-title">Get In <span style="color:var(--amber);">Touch</span></h1>
+      <p style="color:var(--muted); max-width:480px; margin-top:16px; font-size:1rem;">
+        Have a project in mind? Want to collaborate? Just want to say hello? I'm all ears.
+      </p>
+    </div>
+  </div>
+
+  <section>
+    <div class="contact-grid">
+
+      <!-- INFO -->
+      <div class="contact-info reveal">
+        <h2>Let's build something together.</h2>
+        <p>I'm currently available for freelance work, landing pages, web apps, collaborations, and consultations. Response time: usually within 24 hours.</p>
+
+        <div class="contact-methods">
+          <a href="mailto:eemmpatech@gmail.com" class="contact-method">
+            <div class="contact-method-icon">📧</div>
+            <div class="contact-method-text">
+              <h4>Email</h4>
+              <p>eemmpatech@gmail.com</p>
+            </div>
+            <span class="contact-method-arrow">→</span>
+          </a>
+          <a href="https://eemmpatech-empire.github.io/" target="_blank" class="contact-method">
+            <div class="contact-method-icon">🌐</div>
+            <div class="contact-method-text">
+              <h4>EemmPaTech-Empire</h4>
+              <p>View the platform</p>
+            </div>
+            <span class="contact-method-arrow">→</span>
+          </a>
+          <a href="https://github.com/eemmpatech-empire" target="_blank" class="contact-method">
+            <div class="contact-method-icon">💻</div>
+            <div class="contact-method-text">
+              <h4>GitHub</h4>
+              <p>See my code</p>
+            </div>
+            <span class="contact-method-arrow">→</span>
+          </a>
+        </div>
+
+        <div class="availability-badge">
+          Currently available for new projects
+        </div>
+      </div>
+
+      <!-- FORM -->
+      <div class="contact-form-wrap reveal">
+        <h3>Send a Message</h3>
+        <p>Fill the form and I'll get back to you as soon as possible.</p>
+
+        <div id="contactForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label>First Name</label>
+              <input type="text" id="firstName" placeholder="John" />
+            </div>
+            <div class="form-group">
+              <label>Last Name</label>
+              <input type="text" id="lastName" placeholder="Doe" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="email" placeholder="john@example.com" />
+          </div>
+          <div class="form-group">
+            <label>What do you need?</label>
+            <select id="service">
+              <option value="">— Select a service —</option>
+              <option>Landing Page / Website</option>
+              <option>Web App Development</option>
+              <option>UI/UX Implementation</option>
+              <option>Frontend Consultation</option>
+              <option>Collaboration / Partnership</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Budget Range (₦)</label>
+            <select id="budget">
+              <option value="">— Select budget —</option>
+              <option>Under ₦10,000</option>
+              <option>₦10,000 – ₦30,000</option>
+              <option>₦30,000 – ₦70,000</option>
+              <option>₦70,000 – ₦150,000</option>
+              <option>₦150,000+</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Your Message</label>
+            <textarea id="message" placeholder="Tell me about your project — what you need, when you need it, and any details that matter..."></textarea>
+          </div>
+          <button class="form-submit" onclick="submitForm()">
+            Send Message →
+          </button>
+        </div>
+
+        <div class="form-success" id="formSuccess">
+          <div class="success-icon">🌊</div>
+          <h4>Message sent!</h4>
+          <p>Thanks for reaching out. I'll get back to you within 24 hours at eemmpatech@gmail.com</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section style="background:var(--bg2);">
+    <p class="section-label reveal">Common Questions</p>
+    <h2 class="section-title reveal">FAQ</h2>
+    <div class="divider reveal"></div>
+    <div class="faq-grid">
+      <div class="faq-item reveal">
+        <h4>How long does a project take?</h4>
+        <p>A landing page typically takes 2–5 days. A full web app depends on complexity — usually 1–3 weeks. I'll give you a clear timeline before we start.</p>
+      </div>
+      <div class="faq-item reveal">
+        <h4>Do you work remotely?</h4>
+        <p>100%. I work with clients anywhere in Nigeria and beyond via email, WhatsApp, and video calls. Distance is never an issue.</p>
+      </div>
+      <div class="faq-item reveal">
+        <h4>What's your payment process?</h4>
+        <p>Typically 50% upfront to start, 50% on delivery. I accept bank transfer and mobile payment. Flexible for smaller projects.</p>
+      </div>
+      <div class="faq-item reveal">
+        <h4>Can you host/deploy the site too?</h4>
+        <p>Yes! I can deploy to Netlify, Vercel, or GitHub Pages. For custom domains I'll guide you through the full setup.</p>
+      </div>
+      <div class="faq-item reveal">
+        <h4>What if I need changes after delivery?</h4>
+        <p>Minor revisions are included for 7 days after delivery. Bigger changes are quoted separately — always fairly.</p>
+      </div>
+      <div class="faq-item reveal">
+        <h4>Do you do backend/full-stack?</h4>
+        <p>My strength is frontend — HTML, CSS, JS, React. For backend needs I can connect you with trusted collaborators or advise on no-code solutions.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 Emmanuel Paul (BlackSILV). Making waves.</p>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="projects.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    function submitForm() {
+      const first = document.getElementById('firstName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const msg   = document.getElementById('message').value.trim();
+
+      if (!first || !email || !msg) {
+        alert('Please fill in your name, email, and message before sending.');
+        return;
+      }
+      // In production, connect to Formspree / EmailJS / your backend here
+      document.getElementById('contactForm').style.display = 'none';
+      document.getElementById('formSuccess').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
