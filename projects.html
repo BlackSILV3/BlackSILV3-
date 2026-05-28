@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects — BlackSILV</title>
+  <meta name="description" content="Projects by Emmanuel Paul (BlackSILV) — Web apps, tools, and digital experiences." />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ---- PAGE HERO ---- */
+    .page-hero {
+      padding: 160px 5% 80px;
+      border-bottom: 1px solid var(--border);
+      position: relative; overflow: hidden;
+    }
+    .page-hero-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 50% 80% at 80% 50%, rgba(232,160,48,0.06), transparent 70%);
+    }
+    .page-hero-content { position: relative; z-index: 1; }
+    .page-hero p.section-label { margin-bottom: 12px; }
+
+    /* ---- FILTER TABS ---- */
+    .filter-bar {
+      display: flex; gap: 12px; flex-wrap: wrap;
+      margin: 48px 0 40px;
+    }
+    .filter-btn {
+      padding: 8px 22px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      color: var(--muted);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: 0.3s;
+      letter-spacing: 0.06em;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--amber);
+      border-color: var(--amber);
+      color: var(--bg);
+    }
+
+    /* ---- FEATURED PROJECT ---- */
+    .featured-project {
+      background: var(--surface);
+      border: 1px solid var(--amber);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      margin-bottom: 40px;
+      position: relative; overflow: hidden;
+      transition: 0.3s;
+    }
+    .featured-project:hover { box-shadow: 0 20px 50px rgba(232,160,48,0.1); }
+    .featured-project::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--orange), var(--amber), var(--amber2));
+    }
+    .featured-bg-deco {
+      position: absolute; right: -40px; top: -40px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(232,160,48,0.08), transparent 70%);
+      pointer-events: none;
+    }
+    .featured-header {
+      display: flex; align-items: flex-start;
+      justify-content: space-between; flex-wrap: wrap; gap: 16px;
+      margin-bottom: 24px;
+    }
+    .featured-badges { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+    .badge {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.08em;
+    }
+    .badge-building { background: rgba(232,160,48,0.12); color: var(--amber); border: 1px solid rgba(232,160,48,0.3); }
+    .badge-featured { background: rgba(212,98,42,0.12); color: var(--orange); border: 1px solid rgba(212,98,42,0.3); }
+    .badge-live     { background: rgba(100,200,100,0.1); color: #6ec46e; border: 1px solid rgba(100,200,100,0.25); }
+    .badge-ai       { background: rgba(120,100,255,0.1); color: #a090ff; border: 1px solid rgba(120,100,255,0.25); }
+
+    .featured-project h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      color: var(--cream);
+      margin-bottom: 16px;
+    }
+    .featured-project .desc {
+      color: var(--cream2); font-size: 1rem;
+      line-height: 1.75; max-width: 700px; margin-bottom: 28px;
+    }
+    .featured-features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px; margin-bottom: 28px;
+    }
+    .feat-item {
+      display: flex; gap: 10px; align-items: flex-start;
+      padding: 14px;
+      background: var(--bg3); border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+    .feat-icon {
+      width: 28px; height: 28px;
+      background: var(--amber);
+      border-radius: 6px;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--bg);
+    }
+    .feat-item span { font-size: 0.83rem; color: var(--cream2); }
+
+    /* ---- PROJECTS GRID ---- */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 28px;
+    }
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: 0.3s;
+      display: flex; flex-direction: column;
+    }
+    .project-card:hover {
+      border-color: var(--amber);
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+    .project-thumb {
+      height: 180px;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .project-thumb img {
+      width: 100%; height: 100%;
+      object-fit: contain;
+      padding: 20px;
+    }
+    .project-thumb.no-logo {
+      font-size: 1rem;
+      font-family: 'Space Mono', monospace;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+    .project-thumb::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 40%, var(--surface));
+    }
+    .project-body { padding: 24px; flex: 1; display: flex; flex-direction: column; }
+    .project-body h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem; color: var(--cream);
+      margin: 10px 0 10px;
+    }
+    .project-body p { font-size: 0.88rem; color: var(--muted); flex: 1; margin-bottom: 20px; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+    .project-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .project-actions a {
+      padding: 9px 20px;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+    .btn-visit {
+      background: var(--amber); color: var(--bg);
+    }
+    .btn-visit:hover { background: var(--amber2); }
+    .btn-code {
+      background: transparent;
+      color: var(--cream2);
+      border: 1px solid var(--border);
+    }
+    .btn-code:hover { border-color: var(--amber); color: var(--amber); }
+  </style>
+</head>
+<body>
+
+  <div class="cursor"></div>
+  <div class="cursor-ring"></div>
+
+  <div class="mobile-nav">
+    <button class="mobile-close">✕</button>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="projects.html">Projects</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Black<span>SILV</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <button class="nav-menu-btn"><span></span><span></span><span></span></button>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="page-hero-content">
+      <p class="section-label">My Work</p>
+      <h1 class="section-title">Projects &amp;<br><span style="color:var(--amber);">Builds</span></h1>
+      <p style="color:var(--muted); max-width:520px; margin-top:16px; font-size:1rem;">
+        A collection of what I've built — from real-time chat systems to AI-powered tools. Each project is a problem solved.
+      </p>
+    </div>
+  </div>
+
+  <section>
+
+    <!-- FILTER -->
+    <div class="filter-bar reveal">
+      <button class="filter-btn active" data-filter="all">All Projects</button>
+      <button class="filter-btn" data-filter="app">Apps</button>
+      <button class="filter-btn" data-filter="tool">Tools</button>
+      <button class="filter-btn" data-filter="platform">Platforms</button>
+    </div>
+
+    <!-- DC - FEATURED -->
+    <div class="featured-project reveal" data-category="app">
+      <div class="featured-bg-deco"></div>
+      <div class="featured-badges">
+        <span class="badge badge-building">Currently Building</span>
+        <span class="badge badge-featured">Featured Project</span>
+        <span class="badge badge-ai">AI-Powered</span>
+      </div>
+      <h2>DC — Document Creator</h2>
+      <p class="desc">
+        DC is an intelligent document creation app built for everyone. Create professional forms, tables, documents, and lists — fully customizable to your taste. Backed by an AI assistant that helps you write, format, and structure content faster. Comes with beautiful pre-made templates to get you started in seconds.
+      </p>
+      <div class="featured-features">
+        <div class="feat-item"><span class="feat-icon">DOC</span><span>Create documents, forms &amp; tables</span></div>
+        <div class="feat-item"><span class="feat-icon">AI</span><span>AI assistant for smart suggestions</span></div>
+        <div class="feat-item"><span class="feat-icon">UI</span><span>Full customization &amp; styling</span></div>
+        <div class="feat-item"><span class="feat-icon">TPL</span><span>Ready-to-use templates</span></div>
+        <div class="feat-item"><span class="feat-icon">MOB</span><span>Mobile-friendly design</span></div>
+        <div class="feat-item"><span class="feat-icon">EXP</span><span>Save &amp; export your work</span></div>
+      </div>
+      <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+        <span class="tag">React</span>
+        <span class="tag">AI Integration</span>
+        <span class="tag">App</span>
+        <span style="color:var(--muted); font-size:0.82rem; font-family:'Space Mono',monospace; margin-left:8px;">— Launching soon</span>
+      </div>
+    </div>
+
+    <!-- PROJECTS GRID -->
+    <div class="projects-grid">
+
+      <!-- SILVERIBOM CBT SYSTEM — 2nd project -->
+      <div class="project-card reveal" data-category="app">
+        <div class="project-thumb" style="background: linear-gradient(135deg, #0a0a0a, #1a1a1a);">
+          <img src="logo-silveribom.png" alt="SilverIBOM CBT System" />
+        </div>
+        <div class="project-body">
+          <span class="badge badge-live">&#9679; Live</span>
+          <h3>SilverIBOM CBT System</h3>
+          <p>A general-purpose Computer-Based Testing platform. Students preparing for WAEC, GCE, NECO, or JAMB can practise with generated question sets. University students upload lecture materials or audio files — the AI creates detailed questions and explanations on demand. Open to anyone with a document to study from.</p>
+          <div class="project-tags">
+            <span class="tag">AI-Powered</span>
+            <span class="tag">CBT</span>
+            <span class="tag">Education</span>
+            <span class="tag">WAEC / JAMB</span>
+          </div>
+          <div class="project-actions">
+            <a href="https://silveribom-cbt-system-521361616153.us-west1.run.app" target="_blank" class="btn-visit">Visit Site ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- WAVE X -->
+      <div class="project-card reveal" data-category="app">
+        <div class="project-thumb" style="background: linear-gradient(135deg, #ffffff, #e8f4ff);">
+          <img src="logo-wavex.png" alt="WAVE-X" />
+        </div>
+        <div class="project-body">
+          <span class="badge badge-live">&#9679; Live</span>
+          <h3>WAVE-X</h3>
+          <p>Private real-time conversations between two or multiple users. Each conversation uses a unique Room ID for complete privacy. Clean UI, smooth experience — with image, video, and voice note support.</p>
+          <div class="project-tags">
+            <span class="tag">HTML</span>
+            <span class="tag">CSS</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">Real-time</span>
+          </div>
+          <div class="project-actions">
+            <a href="https://wavex-521361616153.us-west1.run.app" target="_blank" class="btn-visit">Visit Site ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- EEMMPATECH EMPIRE -->
+      <div class="project-card reveal" data-category="platform">
+        <div class="project-thumb" style="background: linear-gradient(135deg, #050c1a, #0d1a2e);">
+          <img src="logo-eemmpatech.png" alt="EemmPaTech-Empire" />
+        </div>
+        <div class="project-body">
+          <span class="badge badge-building">In Progress</span>
+          <h3>EemmPaTech-Empire</h3>
+          <p>A Fiverr-style platform for creatives. Users browse and hire designers, visual artists, and service providers all in one polished marketplace. Still growing.</p>
+          <div class="project-tags">
+            <span class="tag">HTML</span>
+            <span class="tag">CSS</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">Marketplace</span>
+          </div>
+          <div class="project-actions">
+            <a href="https://eemmpatech-empire.github.io/" target="_blank" class="btn-visit">Visit Site ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- A.C CURRENCY CONVERTER -->
+      <div class="project-card reveal" data-category="tool">
+        <div class="project-thumb no-logo" style="background: linear-gradient(135deg, #0e1e10, #1a3018);">
+          <span>A.C</span>
+        </div>
+        <div class="project-body">
+          <span class="badge badge-live">&#9679; Live</span>
+          <h3>A.C Currency Converter</h3>
+          <p>Convert any currency to any other currency in real-time. Clean interface, open-source rates, fully responsive across all screen sizes.</p>
+          <div class="project-tags">
+            <span class="tag">HTML</span>
+            <span class="tag">CSS</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">Open Source API</span>
+            <span class="tag">Responsive</span>
+          </div>
+          <div class="project-actions">
+            <a href="https://eemmpatech-empire.github.io/A.C-currency-converter-/" target="_blank" class="btn-visit">Visit Site ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- UNIUYO PORTAL -->
+      <div class="project-card reveal" data-category="app">
+        <div class="project-thumb no-logo" style="background: linear-gradient(135deg, #1a0e0e, #2d1818);">
+          <span>UNIUYO</span>
+        </div>
+        <div class="project-body">
+          <span class="badge badge-live">&#9679; Live (Internal)</span>
+          <h3>UNIUYO '025 EEE Portal</h3>
+          <p>Department portal built for UNIUYO EEE students — digital attendance marking, announcements, and peer interaction all in one platform. Used actively by classmates.</p>
+          <div class="project-tags">
+            <span class="tag">HTML</span>
+            <span class="tag">CSS</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">React</span>
+            <span class="tag">Portal</span>
+          </div>
+          <div class="project-actions">
+            <a href="https://eemmpatech-empire.github.io/UNIUYO--025--ELECT--ELECT--PORTAL/" target="_blank" class="btn-visit">Visit Portal ↗</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section style="text-align:center; background:var(--bg2);">
+    <p class="section-label reveal" style="justify-content:center;">Like What You See?</p>
+    <h2 class="section-title reveal">Let's build your<br><span style="color:var(--amber);">next project.</span></h2>
+    <p class="reveal" style="color:var(--muted); margin-bottom:40px;">I'm available for freelance work, collaborations, and new ideas.</p>
+    <div class="reveal">
+      <a href="contact.html" class="btn btn-primary">Get In Touch →</a>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 Emmanuel Paul (BlackSILV). Making waves.</p>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="projects.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // Filter functionality
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('[data-category]');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        cards.forEach(card => {
+          card.style.display = (filter === 'all' || card.dataset.category === filter) ? '' : 'none';
+        });
+      });
+    });
+  </script>
+</body>
+</html>
